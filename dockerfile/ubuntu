@@ -1,0 +1,66 @@
+FROM ubuntu:22.04
+
+RUN <<EOF
+  apt update
+  apt install -y sudo
+EOF
+
+ARG uid
+ARG userName
+ARG password
+ARG gid
+ARG groupName
+RUN <<EOF
+  groupadd -g $gid $groupName
+  useradd -m -s /bin/bash -u $uid -g $gid -G sudo $userName
+  echo $userName:$password | chpasswd
+  echo "$userName ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+EOF
+USER $userName 
+WORKDIR /home/$userName/
+
+RUN sudo apt install -y curl ripgrep tar unzip vim wget
+
+RUN sudo apt install tmux -y
+
+RUN <<EOF
+  curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+  sudo rm -rf /opt/nvim
+  sudo tar -C /opt -xzf nvim-linux64.tar.gz
+  rm -rf nvim-linux64.tar.gz
+EOF
+ENV PATH="$PATH:/opt/nvim-linux64/bin"
+
+RUN <<EOF
+  sudo apt install software-properties-common -y
+  sudo add-apt-repository ppa:git-core/ppa -y
+  sudo apt install git -y
+EOF
+
+RUN <<EOF
+  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[0-9.]+') 
+  curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+  sudo tar xf lazygit.tar.gz -C /usr/local/bin lazygit
+  rm -rf lazygit.tar.gz
+EOF
+
+RUN <<EOF
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&\
+  sudo apt-get install -y nodejs
+EOF
+
+RUN sudo npm install -g pnpm
+
+ARG gitUserName 
+ARG gitUserEmail 
+
+RUN <<EOF
+  git config --global user.name $gitUserName
+  git config --global user.email $gitUserEmail
+EOF
+
+COPY --chown=$userName:$userName ./nvim/ /home/$userName/.config/nvim/
+
+RUN mkdir /home/$userName/projects/
+
+WORKDIR /home/$userName/projects/
