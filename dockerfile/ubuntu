@@ -45,7 +45,7 @@ RUN <<EOF
 EOF
 
 RUN <<EOF
-  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&\
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
   sudo apt-get install -y nodejs
 EOF
 
@@ -62,5 +62,3 @@ EOF
 COPY --chown=$userName:$userName ./nvim/ /home/$userName/.config/nvim/
 
 RUN mkdir /home/$userName/projects/
-
-WORKDIR /home/$userName/projects/
