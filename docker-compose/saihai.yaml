@@ -17,6 +17,6 @@ services:
     volumes:
       - type: volume
         source: projects
-        target: /home/$USERNAME/projects
+        target: /home/$USERNAME/projects/
 volumes:
   projects:
