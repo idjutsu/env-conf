@@ -1,1 +1,2 @@
-require("3zhnhxx4")
+require("core")
+require("lazynvim")
