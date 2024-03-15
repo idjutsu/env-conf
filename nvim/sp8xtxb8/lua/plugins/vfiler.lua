@@ -6,8 +6,21 @@ return {
 
     require("vfiler/config").setup({
       mappings = {
-        ["l"] = action.open,
-        ["<C-l>"] = action.open_tree_recursive,
+        ["<C-h>"] = action.close_tree_or_cd,
+        ["l"] = action.open_tree,
+        ["<C-l>"] = action.open,
+        ["N"] = function()
+          vim.ui.input({ prompt = "Please enter a new file name?: " }, function(input)
+              if input == nil then
+                return
+              end
+              
+              vim.cmd(":enew")
+              local cmd = ":w".." "..input
+              vim.cmd(cmd)
+            end
+          )
+        end,
 	    	["R"] = action.reload
       },
 
