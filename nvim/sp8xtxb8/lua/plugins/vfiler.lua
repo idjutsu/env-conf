@@ -6,6 +6,7 @@ return {
 
     require("vfiler/config").setup({
       mappings = {
+        ["h"] = function() end,
         ["<C-h>"] = action.close_tree_or_cd,
         ["l"] = action.open_tree,
         ["<C-l>"] = action.open,
