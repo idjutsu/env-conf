@@ -19,7 +19,7 @@ EOF
 USER $userName 
 WORKDIR /home/$userName/
 
-RUN sudo apt install -y build-essential cmake curl ripgrep tar unzip vim wget
+RUN sudo apt install -y build-essential cmake curl ripgrep tar unzip vim wget zip
 
 RUN sudo apt install tmux -y
 
