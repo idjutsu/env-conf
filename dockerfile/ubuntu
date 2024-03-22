@@ -61,5 +61,6 @@ RUN <<EOF
 EOF
 
 COPY --chown=$userName:$userName ./nvim/ /home/$userName/.config/nvim/
+COPY --chown=$userName:$userName ./tmux.conf /home/$userName/.tmux.conf
 
 RUN mkdir /home/$userName/projects/
