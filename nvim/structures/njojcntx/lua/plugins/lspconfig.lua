@@ -49,6 +49,15 @@ return {
 		})
 		lspconfig.tailwindcss.setup({
 			capabilities = capabilities,
+			settings = {
+				tailwindCSS = {
+					experimental = {
+						classRegex = {
+							{ "TailwindcssHelper\\.classNameEntries\\(\\[([^;]*)\\]\\)", '"([^"]*)"' },
+						},
+					},
+				},
+			},
 		})
 		lspconfig.tsserver.setup({
 			capabilities = capabilities,
