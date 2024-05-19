@@ -2,7 +2,7 @@ services:
   main:
     build:
       args:
-        - uis=${UID}
+        - uid=${UID}
         - userName=${USERNAME}
         - password=${PASSWORD}
         - gid=${GID}
