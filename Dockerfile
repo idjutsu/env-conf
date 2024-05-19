@@ -6,19 +6,19 @@ RUN <<EOF
   apt install -y sudo
 EOF
 
-ARG uid
-ARG userName
-ARG password
-ARG gid
-ARG groupName
+ARG UID
+ARG USERNAME 
+ARG PASSWORD 
+ARG GID
+ARG GROUPNAME
 RUN <<EOF
-  groupadd -g $gid $groupName
-  useradd -m -s /bin/bash -u $uid -g $gid -G sudo $userName
-  echo $userName:$password | chpasswd
-  echo "$userName ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+  groupadd -g $GID $GROUPNAME
+  useradd -m -s /bin/bash -u $UID -g $GID -G sudo $USERNAME
+  echo $USERNAME:$PASSWORD | chpasswd
+  echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 EOF
-USER $userName 
-WORKDIR /home/$userName/
+USER $USERNAME 
+WORKDIR /home/$USERNAME/
 
 RUN sudo apt install -y build-essential cmake curl ripgrep tar unzip vim wget zip
 
@@ -52,15 +52,15 @@ EOF
 
 RUN sudo npm install -g pnpm
 
-ARG gitUserName 
-ARG gitUserEmail 
+ARG GITUSERNAME 
+ARG GITUSEREMAIL 
 
 RUN <<EOF
-  git config --global user.name $gitUserName
-  git config --global user.email $gitUserEmail
+  git config --global user.name $GITUSERNAME
+  git config --global user.email $GITUSEREMAIL
 EOF
 
-COPY --chown=$userName:$userName ./nvim/ /home/$userName/.config/nvim/
-COPY --chown=$userName:$userName ./tmux.conf /home/$userName/.tmux.conf
+COPY --chown=$USERNAME:$USERNAME ./nvim/ /home/$USERNAME/.config/nvim/
+COPY --chown=$USERNAME:$USERNAME ./tmux.conf /home/$USERNAME/.tmux.conf
 
-RUN mkdir /home/$userName/projects/
+RUN mkdir /home/$USERNAME/projects/

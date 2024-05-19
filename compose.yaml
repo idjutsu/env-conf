@@ -1,0 +1,30 @@
+services:
+  main:
+    build:
+      args:
+        #- UID=${UID}
+        #- userName=${USERNAME}
+        #- password=${PASSWORD}
+        #- gid=${GID}
+        #- groupName=${GROUPNAME}
+        #- gitUserName=${GIT_USERNAME}
+        #- gitUserEmail=${GIT_USEREMAIL}
+        UID: $UID
+        USERNAME: $USERNAME
+        PASSWORD: $PASSWORD
+        GID: $GID
+        GROUPNAME: $GROUPNAME
+        GITUSERNAME: $GITUSERNAME
+        GITUSEREMAIL: $GITUSEREMAIL
+      context: .
+    ports:
+      - "$PORT"
+      - "$STORYBOOK_PORT"
+    stdin_open: true
+    tty: true
+    volumes:
+      - type: volume
+        source: projects
+        target: /home/$USERNAME/projects/
+volumes:
+  projects:
