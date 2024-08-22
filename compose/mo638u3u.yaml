@@ -1,0 +1,26 @@
+services:
+  main:
+    build:
+      args:
+        UID: $UID
+        USER_NAME: $USER_NAME
+        USER_PWD: $USER_PWD
+        GID: $GID
+        GROUP_NAME: $GROUP_NAME
+        GIT_USER_NAME: $GIT_USER_NAME
+        GIT_USER_EMAIL: $GIT_USER_EMAIL
+      context: .
+    platform: linux/amd64
+    ports:
+      - "5173:5173"
+    tty: true
+    volumes:
+      - type: bind
+        source: /Users/a/tmp/nvim/
+        target: /home/$USER_NAME/.config/nvim/
+      - type: bind
+        source: project/
+        target: /home/$USER_NAME/project/
+      - type: bind
+        source: /Users/a/tmp/.tmux.conf
+        target: /home/$USER_NAME/.tmux.conf
