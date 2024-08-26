@@ -1,0 +1,51 @@
+FROM ubuntu:22.04
+
+RUN apt update && \
+    apt install -y sudo
+
+ARG UID
+ARG USER_NAME
+ARG USER_PWD
+ARG GID
+ARG GROUP_NAME
+RUN groupadd -g $GID $GROUP_NAME && \
+    useradd -m -s /bin/bash -u $UID -g $GID -G sudo $USER_NAME && \
+    echo $USER_NAME:$USER_PWD | chpasswd && \
+    echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+USER $USER_NAME
+WORKDIR /home/$USER_NAME/
+
+RUN sudo apt install -y curl software-properties-common && \
+    sudo add-apt-repository -y ppa:git-core/ppa && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && \
+    sudo apt update
+
+RUN sudo apt install -y bash-completion cmake git nodejs tmux unzip zip
+
+RUN bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+
+RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz && \
+    sudo rm -rf /opt/nvim && \
+    sudo tar -C /opt -xzf nvim-linux64.tar.gz && \
+    rm -rf nvim-linux64.tar.gz
+ENV PATH="/opt/nvim-linux64/bin:$PATH"
+
+RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[0-9.]+') && \
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" && \
+    sudo tar xf lazygit.tar.gz -C /usr/local/bin lazygit && \
+    rm -rf lazygit.tar.gz
+
+ARG GIT_USER_NAME 
+ARG GIT_USER_EMAIL 
+ARG BASHRC
+ARG TMUX_CONF 
+ARG NVIM_CONF 
+RUN git config --global user.name $GIT_USER_NAME && \
+    git config --global user.email $GIT_USER_EMAIL && \
+    git clone https://github.com/one-man-shogun/env-conf.git && \
+    cp ~/env-conf/bashrc/$BASHRC ~/.bashrc && \
+    cp ~/env-conf/tmux/$TMUX_CONF ~/.tmux.conf && \
+    mkdir ~/.config && \
+    cp -r ~/env-conf/nvim/$NVIM_CONF/ ~/.config/nvim/
+
+RUN mkdir /home/$USER_NAME/project/
