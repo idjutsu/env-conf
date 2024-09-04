@@ -6,6 +6,8 @@ vim.opt.ai = true
 --vim.opt.background = "dark"
 vim.opt.bri = true
 --vim.opt.clipboard:append("unnamedplus")
+vim.opt.cuc = true
+vim.opt.cul = true
 vim.opt.et = true
 vim.opt.nu = true
 vim.opt.sw = 4
