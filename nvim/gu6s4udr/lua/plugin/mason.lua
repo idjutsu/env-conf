@@ -8,14 +8,14 @@ return {
 			ensure_installed = {
 				"bashls",
 				"cssls",
-                "emmet_language_server",
+				"emmet_language_server",
 				"html",
 				"intelephense",
 				"jsonls",
 				"lua_ls",
 				"markdown_oxide",
 				"tailwindcss",
-				"tsserver",
+				"ts_ls",
 			},
 			handlers = {
 				function(server_name)
