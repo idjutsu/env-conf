@@ -49,6 +49,19 @@ return {
 						},
 					})
 				end,
+                ["tailwindcss"] = function()
+					lspconfig.tailwindcss.setup({
+						settings = {
+							tailwindCSS = {
+								experimental = {
+									classRegex = {
+										{ "TailwindCss::createClassName\\(\\[([^;]*)\\]\\)", '"([^"]*)"' },
+									},
+								},
+							},
+						},
+					})
+				end,
 			},
 		})
 	end,
